@@ -8,7 +8,7 @@
  ./mdmctl mdmcert vendor -password=vlkasvkja1rd -country=FR -email=leo.b
 runet@pradeo.com
 
-# download vendor certificate on apple dev
+# download vendor certificate on apple dev (https://developer.apple.com/account/resources/certificates/add/download/7WGG8N2HK9)
 
 # create a push CSR (PushCertificateRequest.key and PushCertificatePrivateKey.key)
 ./mdmctl mdmcert push -password=vlkasvkja1rd -country=FR -email=leo.brunet@pradeo.com
@@ -16,4 +16,14 @@ runet@pradeo.com
 # sign the push certificate request with the vendor certificate which generate PushCertificateRequest.plist
 ./mdmctl mdmcert vendor -sign -cert=./mdm-certificates/MDM_Pradeo_Security_Systems_Certificate.cer -password=vlkasvkja1rd
 
-# upload the PushCertificateRequest.plist file to get the APNS certificate
+# upload the PushCertificateRequest.plist file to get the APNS certificate and download MDM_Pradeo_Security_Systems_Certificate.pem (https://identity.apple.com/pushcert/)
+
+# upload the certificate to MicroMDM
+./mdmctl mdmcert upload -cert mdm-certificates/MDM_Pradeo_Security_Systems_Certificate.pem -private-key mdm-certificates/PushCertificatePrivateKey.key -password=vlkasvkja1rd
+
+
+# LAUNCH server
+sudo ./micromdm serve -server-url=https://stunning-space-tribble-7575v4rqq9j2xprj-8080.app.github.dev/ -api-key MySecureAPIKey12345 -filerepo . -tls=false -command-webhook-url=https://mdm-pradeo.onrender.com/webhook
+
+# set env values
+export MICROMDM_ENV_PATH="$(pwd)/env"

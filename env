@@ -1,0 +1,3 @@
+export API_TOKEN=MySecureAPIKey12345
+export PUSH_CERTIFICATE_PRIVATE_KEY_PASSWORD=vlkasvkja1rd
+export SERVER_URL="https://stunning-space-tribble-7575v4rqq9j2xprj-8080.app.github.dev"
