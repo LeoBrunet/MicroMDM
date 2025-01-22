@@ -1,0 +1,8 @@
+ ./mdmctl config set -name production -api-token MySecureAPIKey12345 -server-url https://stunning-space-tribble-7575v4rqq9j2xprj-8080.app.github.dev/
+
+ ./mdmctl config switch -name production
+
+ ./mdmctl config print
+
+ ./mdmctl mdmcert vendor -password=vlkasvkja1rd -country=FR -email=leo.b
+runet@pradeo.com
