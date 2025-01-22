@@ -4,5 +4,16 @@
 
  ./mdmctl config print
 
+# create a request for the MDM CSR (VendorCertificateRequest.csr and VendorPrivateKey.key)
  ./mdmctl mdmcert vendor -password=vlkasvkja1rd -country=FR -email=leo.b
 runet@pradeo.com
+
+# download vendor certificate on apple dev
+
+# create a push CSR (PushCertificateRequest.key and PushCertificatePrivateKey.key)
+./mdmctl mdmcert push -password=vlkasvkja1rd -country=FR -email=leo.brunet@pradeo.com
+
+# sign the push certificate request with the vendor certificate which generate PushCertificateRequest.plist
+./mdmctl mdmcert vendor -sign -cert=./mdm-certificates/MDM_Pradeo_Security_Systems_Certificate.cer -password=vlkasvkja1rd
+
+# upload the PushCertificateRequest.plist file to get the APNS certificate
