@@ -1,10 +1,17 @@
 #!/bin/bash
 source $MICROMDM_ENV_PATH
 endpoint="v1/commands"
-jq -n \
+
+# Generate the JSON command
+json_command=$(jq -n \
   --arg request_type "SecurityInfo" \
   --arg udid "$1" \
   '.udid = $udid 
-  |.request_type = $request_type
-  '|\
-  curl $CURL_OPTS -K <(cat <<< "-u micromdm:$API_TOKEN") "$SERVER_URL/$endpoint" -d@-
+  | .request_type = $request_type')
+
+# Print the generated JSON command
+echo "Generated Command:"
+echo "$json_command"
+
+# Send the command via curl
+curl $CURL_OPTS -K <(cat <<< "-u micromdm:$API_TOKEN") "$SERVER_URL/$endpoint" -d "$json_command"
