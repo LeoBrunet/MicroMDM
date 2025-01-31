@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>HasRemovalPasscode</key>
+	<false/>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>PayloadContent</key>
+			<dict>
+				<key>Challenge</key>
+				<string>micromdm</string>
+				<key>Key Type</key>
+				<string>RSA</string>
+				<key>Key Usage</key>
+				<integer>5</integer>
+				<key>Keysize</key>
+				<integer>2048</integer>
+				<key>Name</key>
+				<string>Device Management Identity Certificate</string>
+				<key>Subject</key>
+				<array>
+					<array>
+						<array>
+							<string>O</string>
+							<string>MicroMDM</string>
+						</array>
+					</array>
+					<array>
+						<array>
+							<string>CN</string>
+							<string>MicroMDM Identity (%ComputerName%)</string>
+						</array>
+					</array>
+				</array>
+				<key>URL</key>
+				<string>https://stunning-space-tribble-7575v4rqq9j2xprj-8080.app.github.dev/scep</string>
+			</dict>
+			<key>PayloadDescription</key>
+			<string>Configures SCEP</string>
+			<key>PayloadDisplayName</key>
+			<string>SCEP</string>
+			<key>PayloadIdentifier</key>
+			<string>com.apple.security.scep.3DAAC792-1198-41BE-B3C5-799E0A60E5EF</string>
+			<key>PayloadOrganization</key>
+			<string>MicroMDM</string>
+			<key>PayloadType</key>
+			<string>com.apple.security.scep</string>
+			<key>PayloadUUID</key>
+			<string>3DAAC792-1198-41BE-B3C5-799E0A60E5EF</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>AccessRights</key>
+			<integer>8191</integer>
+			<key>CheckInURL</key>
+			<string>https://stunning-space-tribble-7575v4rqq9j2xprj-8080.app.github.dev/mdm/checkin</string>
+			<key>CheckOutWhenRemoved</key>
+			<true/>
+			<key>IdentityCertificateUUID</key>
+			<string>3DAAC792-1198-41BE-B3C5-799E0A60E5EF</string>
+			<key>PayloadDescription</key>
+			<string>Enrolls with the MDM server</string>
+			<key>PayloadIdentifier</key>
+			<string>com.apple.mdm.FD793021-ECD7-4FEC-B3DE-7A6C703F8C5C</string>
+			<key>PayloadOrganization</key>
+			<string>MicroMDM</string>
+			<key>PayloadType</key>
+			<string>com.apple.mdm</string>
+			<key>PayloadUUID</key>
+			<string>FD793021-ECD7-4FEC-B3DE-7A6C703F8C5C</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>ServerCapabilities</key>
+			<array>
+				<string>com.apple.mdm.per-user-connections</string>
+				<string>com.apple.mdm.bootstraptoken</string>
+			</array>
+			<key>ServerURL</key>
+			<string>https://stunning-space-tribble-7575v4rqq9j2xprj-8080.app.github.dev/mdm/connect</string>
+			<key>SignMessage</key>
+			<true/>
+			<key>Topic</key>
+			<string>com.apple.mgmt.External.18dbd709-6f6a-4522-b49e-096e9bea50f5</string>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>The server may alter your settings</string>
+	<key>PayloadDisplayName</key>
+	<string>Enrollment Profile</string>
+	<key>PayloadIdentifier</key>
+	<string>com.github.micromdm.micromdm.enroll</string>
+	<key>PayloadOrganization</key>
+	<string>MicroMDM</string>
+	<key>PayloadRemovalDisallowed</key>
+	<false/>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>DD54F0BE-2CB6-45DB-B640-EFC59D2A5629</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>

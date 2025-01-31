@@ -4,11 +4,11 @@ endpoint="v1/commands"
 jq -n \
   --arg request_type "InstallApplication" \
   --arg udid "$1" \
-  --arg manifest_url "$2" \
+  --arg identifier "$2" \
   '.udid = $udid
-  |.request_type = $request_type
-  |.manifest_url = $manifest_url
-  '|\
+  | .request_type = $request_type
+  | .identifier = $identifier
+  | .change_management_state = "Managed" '| \
   curl $CURL_OPTS \
     -H "Content-Type: application/json" \
     -K <(cat <<< "-u micromdm:$API_TOKEN") "$SERVER_URL/$endpoint" -d@-

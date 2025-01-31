@@ -17,17 +17,57 @@
 #   </dict>
 # </plist>
 
+#!/bin/bash
+
+# Check for required arguments
+if [ $# -lt 2 ]; then
+    echo "Usage: $0 <UDID> <identifier>"
+    exit 1
+fi
+
+# Inputs
+UDID="$1"
+IDENTIFIER="$2"
+OUTPUT_PLIST="config.plist"
+
+# Source MicroMDM environment
 source $MICROMDM_ENV_PATH
-endpoint="v1/commands"
+
+# Endpoint and API setup
+ENDPOINT="v1/commands"
+
+# Generate the .plist file
+cat <<EOF > "$OUTPUT_PLIST"
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>mdmId</key>
+        <string>${UDID}</string>
+    </dict>
+</plist>
+EOF
+
+echo "Plist file created: $OUTPUT_PLIST"
+
+# Encode the plist file to base64
+PAYLOAD=$(cat "$OUTPUT_PLIST" | openssl base64 -A)
+
+# Create the MDM command using jq and send it
 jq -n \
   --arg request_type "Settings" \
-  --arg udid "$1" \
-  --arg identifier "$2" \
-  --arg payload "$(cat $3|openssl base64 -A)" \
- '.udid = $udid 
-  |.request_type = $request_type
-  |.settings[0].item = "ApplicationConfiguration"
-  |.settings[0].identifier = $identifier
-  |.settings[0].configuration = $payload
-  '|\
-  curl $CURL_OPTS -K <(cat <<< "-u micromdm:$API_TOKEN") "$SERVER_URL/$endpoint" -d@-
+  --arg udid "$UDID" \
+  --arg identifier "$IDENTIFIER" \
+  --arg payload "$PAYLOAD" \
+  '.udid = $udid 
+   |.request_type = $request_type
+   |.settings[0].item = "ApplicationConfiguration"
+   |.settings[0].identifier = $identifier
+   |.settings[0].configuration = $payload
+  ' | curl $CURL_OPTS \
+      -H "Content-Type: application/json" \
+      -K <(cat <<< "-u micromdm:$API_TOKEN") \
+      "$SERVER_URL/$ENDPOINT" -d@-
+
+# Cleanup (optional)
+rm -f "$OUTPUT_PLIST"

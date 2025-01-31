@@ -19,6 +19,7 @@ def webhook():
     data = request.get_json(silent=True)
     if not data or 'acknowledge_event' not in data or 'raw_payload' not in data['acknowledge_event']:
         logger.error("Invalid JSON structure or missing fields")
+        logger.info(f"data: {data}")
         return {"status": "error", "message": "Invalid JSON structure or missing fields"}, 400
 
     raw_payload = data['acknowledge_event']['raw_payload']
