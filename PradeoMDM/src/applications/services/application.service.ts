@@ -39,4 +39,8 @@ export class ApplicationService {
     }
     return null;
   }
+
+  async deleteByDeviceId(deviceId: number): Promise<void> {
+    await this.applicationRepository.delete({ deviceId });
+  }
 }

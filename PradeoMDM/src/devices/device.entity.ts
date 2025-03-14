@@ -27,6 +27,9 @@ export class Device {
   @Column({ nullable: true })
   meid: string;
 
+  @Column({ nullable: true })
+  buildVersion: string;
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   enrolledAt: Date;
 

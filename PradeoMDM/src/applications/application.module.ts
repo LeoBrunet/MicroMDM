@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Application } from './application.entity';
 import { ApplicationService } from './services/application.service';
@@ -14,7 +14,7 @@ import { DeviceModule } from '../devices/device.module';
     TypeOrmModule.forFeature([Application]),
     ConfigModule,
     HttpModule,
-    DeviceModule,
+    forwardRef(() => DeviceModule)
   ],
   providers: [ApplicationService, ApplicationMdmService],
   controllers: [ApplicationController, ApplicationMdmController],

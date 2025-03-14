@@ -28,3 +28,9 @@ export class AuthenticateEventDto {
   @IsString()
   UDID: string;
 }
+
+
+export class CheckOutEventDto {
+  @IsString()
+  UDID: string;
+}

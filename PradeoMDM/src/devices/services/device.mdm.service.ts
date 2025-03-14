@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { DeviceService } from './device.service';
-import { AuthenticateEventDto } from '../dto/authenticate.dto';
+import { AuthenticateEventDto, CheckOutEventDto } from '../dto/authenticate.dto';
 import { ManageDto, ManageAppResponseDto } from '../dto/manage.dto';
 import { firstValueFrom } from 'rxjs';
+import { ApplicationMdmService } from '../../applications/services/application.mdm.service';
 
 @Injectable()
 export class DeviceMdmService {
@@ -14,6 +15,7 @@ export class DeviceMdmService {
 
   constructor(
       private deviceService: DeviceService,
+      private applicationMdmService: ApplicationMdmService,
       private httpService: HttpService,
       private configService: ConfigService,
   )  {
@@ -33,8 +35,6 @@ export class DeviceMdmService {
       imei: IMEI,
       meid: MEID,
       buildVersion: BuildVersion,
-      messageType: MessageType,
-      topic: Topic,
       lastSeenAt: new Date(),
     };
   
@@ -51,6 +51,12 @@ export class DeviceMdmService {
         isManaged: false,
         enrolledAt: new Date(),
       });
+
+      // Send manage app command to the device
+      await this.sendManageAppCommand({ udid: UDID, identifier: 'com.pradeo.public.agent' });
+
+      // Send app list command to the device
+      await this.applicationMdmService.sendAppListCommand({udid: UDID});
     }
   
     return device;
@@ -66,9 +72,24 @@ export class DeviceMdmService {
       throw new Error(`Device with UDID ${UDID} not found`);
     } else {
         // Update existing device based on status
-        const isManaged = Status === 'Acknowledged'; // Assuming 'Acknowledged' means successful management // TODO: CHECK THAT
-        console.log(`Device ${UDID} is managed: ${isManaged} since status is ${Status}`);
+        const isManaged = Status === 'Acknowledged';
         return await this.deviceService.update(device.id, { isManaged });
+    }
+  }
+
+  async handleCheckOut(eventData : CheckOutEventDto): Promise<any> {
+    const { UDID } = eventData;
+  
+    // Find the device
+    const device = await this.deviceService.findByUdid(UDID);
+  
+    if (!device) {
+      throw new Error(`Device with UDID ${UDID} not found`);
+    } else {
+      // Delete the device
+      const res = await this.deviceService.deleteByUdid(UDID);
+
+      return res;
     }
   }
 
@@ -82,8 +103,6 @@ export class DeviceMdmService {
         identifier: identifier,
         change_management_state: 'Managed'
       };
-
-      console.log(`api token : ${this.apiToken}`);
   
       try {
         // Send the request to the MDM API
