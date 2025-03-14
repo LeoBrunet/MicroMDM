@@ -68,5 +68,22 @@ curl -X POST 'https://stunning-space-tribble-7575v4rqq9j2xprj-10000.app.github.d
     }
   }'
 
-  sudo service mysql start
-  npm run start:dev
+
+sudo service mysql start
+npm run start:dev
+
+// TODO CHECK nth-check and axios (just the package-lock.json)
+
+
+// COMMANDS
+// GET APP LIST
+curl -X POST https://stunning-space-tribble-7575v4rqq9j2xprj-10000.app.github.dev/mdm/applications/list -H "Content-Type: application/json"      -d '{
+           "udid": "00008101-0001214A1AB9001E"
+         }'
+
+// MANAGE APP
+curl -X POST https://stunning-space-tribble-7575v4rqq9j2xprj-10000.app.github.dev/mdm/devices/manage      -H "Content-Type: application/json"      -d '{
+           "udid": "00008101-0001214A1AB9001E",
+           "action": "install",
+           "identifier": "com.pradeo.public.agent"
+         }'

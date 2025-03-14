@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
-import { DeviceService } from './device.service';
+import { DeviceService } from '../services/device.service';
 
 @Controller('devices')
 export class DeviceController {

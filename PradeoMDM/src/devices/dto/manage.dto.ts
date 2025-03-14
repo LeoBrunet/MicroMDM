@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class ManageAppDto {
+export class ManageDto {
   @IsString()
   udid: string;
 
