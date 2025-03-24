@@ -26,7 +26,7 @@ export class WebhookHandlerService {
         return this.deviceMdmService.handleAuthenticate(payloadDict);
       
       case 'CheckOutResponse':
-        return this.deviceMdmService.handleCheckOut(payloadDict.UDID);
+        return this.deviceMdmService.handleCheckOut(payloadDict);
       
       default:
         return { status: "success", message: "No action required" };

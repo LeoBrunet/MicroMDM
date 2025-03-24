@@ -12,6 +12,10 @@ export class DeviceService {
     private readonly applicationService: ApplicationService
   ) {}
 
+  async findAll(): Promise<Device[]> {
+    return this.deviceRepository.find();
+  }
+
   async findByUdid(udid: string): Promise<Device> {
     return this.deviceRepository.findOne({ where: { udid } });
   }

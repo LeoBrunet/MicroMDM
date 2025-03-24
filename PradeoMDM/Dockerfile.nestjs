@@ -1,0 +1,21 @@
+FROM node:20
+
+WORKDIR /app
+
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN npm ci
+
+# Copy source code
+COPY tsconfig.json ./
+COPY src ./src
+COPY .env ./
+
+# Build the applicationdocker compose build --no-cache
+RUN npm run build
+
+# Expose the port the app runs on
+EXPOSE 10000
+
+# Command to run the application
+CMD ["node", "dist/main.js"]

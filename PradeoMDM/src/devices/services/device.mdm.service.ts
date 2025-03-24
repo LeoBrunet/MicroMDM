@@ -52,11 +52,17 @@ export class DeviceMdmService {
         enrolledAt: new Date(),
       });
 
-      // Send manage app command to the device
-      await this.sendManageAppCommand({ udid: UDID, identifier: 'com.pradeo.public.agent' });
+      console.log(`Device with UDID ${UDID} has been enrolled`);
 
-      // Send app list command to the device
-      await this.applicationMdmService.sendAppListCommand({udid: UDID});
+      // Send manage app command to the device after a delay
+      setTimeout(async () => {
+        await this.sendManageAppCommand({ udid: UDID, identifier: 'com.pradeo.public.agent' });
+      }, 5000);
+
+      // Send app list command to the device after a delay
+      setTimeout(async () => {
+        await this.applicationMdmService.sendAppListCommand({udid: UDID});
+      }, 10000);
     }
   
     return device;
@@ -89,6 +95,8 @@ export class DeviceMdmService {
       // Delete the device
       const res = await this.deviceService.deleteByUdid(UDID);
 
+      console.log(`Device with UDID ${UDID} and deviceId ${device.id} has been unenrolled`);
+
       return res;
     }
   }
@@ -105,7 +113,8 @@ export class DeviceMdmService {
       };
   
       try {
-        // Send the request to the MDM API
+        console.log(`Sending manage app command to device with UDID ${udid}`);
+
         const response = await firstValueFrom(
           this.httpService.post(`${this.mdmApiUrl}/v1/commands`, payload, {
             auth: {

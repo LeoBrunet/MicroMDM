@@ -9,4 +9,9 @@ export class DeviceController {
   async getDeviceByUdid(@Param('udid') udid: string) {
     return this.deviceService.findByUdid(udid);
   }
+
+  @Get()
+  async getDevices() {
+    return this.deviceService.findAll();
+  }
 }

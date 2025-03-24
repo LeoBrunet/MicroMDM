@@ -32,5 +32,11 @@ export class AuthenticateEventDto {
 
 export class CheckOutEventDto {
   @IsString()
+  MessageType: string;
+
+  @IsString()
+  Topic: string;
+
+  @IsString()
   UDID: string;
 }

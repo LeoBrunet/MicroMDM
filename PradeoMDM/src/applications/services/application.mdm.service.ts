@@ -58,6 +58,8 @@ export class ApplicationMdmService {
     };
 
     try {
+      console.log(`Sending app list command to device with UDID ${udid}`);
+
       // Send the request to the MDM API
       const response = await firstValueFrom(
         this.httpService.post(`${this.mdmApiUrl}/v1/commands`, payload, {

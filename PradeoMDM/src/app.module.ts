@@ -5,6 +5,7 @@ import { HttpModule } from '@nestjs/axios';
 import { DeviceModule } from './devices/device.module';
 import { ApplicationModule } from './applications/application.module';
 import { WebhookModule } from './common/webhooks/webhook.module';
+import { CronService } from './common/services/cron.service';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { WebhookModule } from './common/webhooks/webhook.module';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'mariadb',
-        host: configService.get('DB_HOST', 'localhost'),
+        host: configService.get('DB_HOST', 'mysql'),
         port: configService.get('DB_PORT', 3306),
         username: configService.get('DB_USERNAME', 'root'),
         password: configService.get('DB_PASSWORD', 'password'),
@@ -37,5 +38,6 @@ import { WebhookModule } from './common/webhooks/webhook.module';
     ApplicationModule,
     WebhookModule
   ],
+  providers: [CronService],
 })
 export class AppModule {}

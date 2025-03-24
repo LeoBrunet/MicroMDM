@@ -1,0 +1,18 @@
+  // create a request for the MDM CSR (VendorCertificateRequest.csr and VendorPrivateKey.key)
+  436  docker exec -it pradeomdm-micromdm-1  ./mdmctl mdmcert vendor -password=vlkasvkja1rd -country=FR -email=leo.brunet@pradeo.com
+  // useless
+  441  docker cp pradeomdm-micromdm-1:/app/mdm-certificates ./mdm-certificate-docker
+  // upload the VendorCertificateRequest.csr and then download vendor certificate on apple dev and upload it to the container
+  442  docker cp test/mdm-2.cer pradeomdm-micromdm-1:/app/mdm-certificates/
+  // create a push CSR (PushCertificateRequest.key and PushCertificatePrivateKey.key)
+  443  docker exec -it pradeomdm-micromdm-1 ./mdmctl mdmcert push -password=vlkasvkja1rd -country=FR -email=leo.brunet@pradeo.com
+  444  docker exec -it pradeomdm-micromdm-1 ls -lt  mdm-certificates
+  // sign the push certificate request with the vendor certificate which generate PushCertificateRequest.plist
+  445  docker exec -it pradeomdm-micromdm-1 ./mdmctl mdmcert vendor -sign -cert=./mdm-certificates/mdm-2.cer -password=vlkasvkja1rd
+  446  docker exec -it pradeomdm-micromdm-1 ls -lt  mdm-certificates
+  // get the PushCertificateRequest.plist from the container
+  447  docker cp pradeomdm-micromdm-1:/app/mdm-certificates/PushCertificateRequest.plist ./test/
+  // upload the PushCertificateRequest.plist file to get the APNS certificate and download MDM_Pradeo_Security_Systems_Certificate.pem and upload it to the container
+  448  docker cp test/MDM_Cert.pem pradeomdm-micromdm-1:/app/mdm-certificates/
+  // upload the certificate to MicroMDM
+  450  docker exec -it pradeomdm-micromdm-1 ./mdmctl mdmcert upload -cert ./mdm-certificates/MDM_Cert.pem  -private-key mdm-certificates/PushCertificatePrivateKey.key -password=vlkasvkja1rd

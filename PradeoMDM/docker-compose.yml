@@ -1,0 +1,63 @@
+services:
+  # Database service
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD:-changeit}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  # NestJS application
+  webhook:
+    build:
+      context: .
+      dockerfile: Dockerfile.nestjs
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${DB_DATABASE}
+      - PORT=${WEBHOOK_PORT:-10000}
+      - MDM_API_TOKEN=${MDM_API_TOKEN}
+      - MDM_API_URL=${MDM_API_URL}
+    ports:
+      - "10000:10000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # MicroMDM service
+  micromdm:
+    build:
+      context: .
+      dockerfile: Dockerfile.micromdm
+    environment:
+      - MDM_API_TOKEN=${MDM_API_TOKEN}
+      - MDM_SERVER_URL=${MDM_API_URL}
+      - MDM_WEBHOOK_URL=${MDM_WEBHOOK_URL}
+      - MDM_CERT_PASSWORD=${MDM_CERT_PASSWORD}
+      - MDM_CERT_COUNTRY=${MDM_CERT_COUNTRY}
+      - MDM_CERT_EMAIL=${MDM_CERT_EMAIL}
+    ports:
+       - "443:443" # See the doc https://github.com/micromdm/micromdm/blob/main/docs/user-guide/introduction.md#network-tls-dns-apns-etc
+       - "80:80"   # Pour rediriger HTTP vers HTTPS
+       - "8080:8080"  # Si besoin pour debug
+    volumes:
+      - ./mdm-certificates:/app/mdm-certificates:rw
+      - mdm_files:/app/mdm-files
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+  mdm_files:
