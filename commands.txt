@@ -26,6 +26,7 @@ sudo ./micromdm serve -server-url=https://stunning-space-tribble-7575v4rqq9j2xpr
 # set env values for mdmctl
 export MICROMDM_ENV_PATH="$(pwd)/env"
 - ./tools/api/commands/installed_application_list 00008101-0001214A1AB9001E
+- ./tools/api/commands/install_enterprise_application 00008101-0001214A1AB9001E https://pradeo.com/wp-content/uploads/ext/milistore/manifest.plist
 - ./tools/api/commands/installed_managed_application_list 00008101-0001214A1AB9001E
 - ./tools/api/commands/profile_list 00008101-0001214A1AB9001E
 - ./tools/api/commands/install_profile 00008101-0001214A1AB9001E configuration.plist
@@ -83,6 +84,12 @@ curl -X POST https://stunning-space-tribble-7575v4rqq9j2xprj-10000.app.github.de
            "udid": "00008101-0001214A1AB9001E",
            "action": "install",
            "identifier": "com.pradeo.public.agent"
+         }'
+
+curl -X POST https://stunning-space-tribble-7575v4rqq9j2xprj-10000.app.github.dev/mdm/devices/manage      -H "Content-Type: application/json"      -d '{
+           "udid": "00008101-0001214A1AB9001E",
+           "action": "install",
+           "manifest": "com.pradeo.public.agent"
          }'
 
 ACCESS DOCKER Database

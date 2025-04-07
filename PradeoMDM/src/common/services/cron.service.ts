@@ -13,8 +13,8 @@ export class CronService {
   }
 
   scheduleTasks() {
-    cron.schedule('22 * * * *', async () => {
-      console.log('Tâche planifiée exécutée toutes les heures à la 22e minutes');
+    cron.schedule('0 * * * *', async () => {
+      console.log('Get applications - ' + new Date());
       const devices = await this.deviceService.findAll();
       
       for (const device of devices) {

@@ -1,18 +1,46 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Application } from '../application.entity';
+import { DeviceService } from '../../devices/services/device.service';
 
 @Injectable()
 export class ApplicationService {
   constructor(
     @InjectRepository(Application)
     private applicationRepository: Repository<Application>,
+    @Inject(forwardRef(() => DeviceService))
+    private readonly deviceService: DeviceService
   ) {}
 
+  async findAll(): Promise<Application[]> {
+    return this.applicationRepository.find();
+  }
+  
+  async findByDevice(deviceId: number): Promise<Application[]> {
+    return this.applicationRepository.find({
+      where: { deviceId },
+    });
+  }
+
+  async findByDeviceUDID(udid: string): Promise<Application[]> {
+    const device = await this.deviceService.getDeviceByUDIDOrThrow(udid);
+    return this.applicationRepository.find({ where: { deviceId: device.id } });
+  }
+  
   async findByDeviceAndIdentifier(deviceId: number, identifier: string): Promise<Application> {
     return this.applicationRepository.findOne({
       where: { deviceId, identifier },
+    });
+  }
+
+  async findByDeviceUdidAndIdentifier(udid: string, identifier: string): Promise<Application> {
+    const device = await this.deviceService.getDeviceByUDIDOrThrow(udid);
+    return this.applicationRepository.findOne({
+      where: {
+        deviceId: device.id,
+        identifier,
+      },
     });
   }
 
