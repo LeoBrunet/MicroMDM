@@ -1,0 +1,11 @@
+version: "3"
+agent:
+    authtoken: 2pCYc92KQlZKKzvsP0qkis445TZ_4e7sKCmm2Q6JyCmVpWKEd
+      
+tunnels:
+  micromdm:
+    proto: http
+    addr: 8080
+  webhook:
+    proto: http
+    addr: 10000

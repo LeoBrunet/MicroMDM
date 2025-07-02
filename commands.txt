@@ -1,4 +1,4 @@
- ./mdmctl config set -name production -api-token MySecureAPIKey12345 -server-url https://stunning-space-tribble-7575v4rqq9j2xprj-8080.app.github.dev -skip-verify true
+ ./mdmctl config set -name production -api-token MySecureAPIKey12345 -server-url https://infinite-boss-serval.ngrok-free.app -skip-verify true
 
  ./mdmctl config switch -name production
 
@@ -21,7 +21,7 @@
 ./mdmctl mdmcert upload -cert mdm-certificates/MDM_Pradeo_Security_Systems_Certificate.pem -private-key mdm-certificates/PushCertificatePrivateKey.key -password=vlkasvkja1rd
 
 # LAUNCH server
-sudo ./micromdm serve -server-url=https://stunning-space-tribble-7575v4rqq9j2xprj-8080.app.github.dev/ -api-key MySecureAPIKey12345 -filerepo . -tls=false -command-webhook-url=https://stunning-space-tribble-7575v4rqq9j2xprj-10000.app.github.dev/webhook/mdm
+sudo ./micromdm serve -server-url=https://infinite-boss-serval.ngrok-free.app/ -api-key MySecureAPIKey12345 -filerepo . -tls=false -command-webhook-url=https://infinite-boss-serval.ngrok-free.app/webhook/mdm
 
 # set env values for mdmctl
 export MICROMDM_ENV_PATH="$(pwd)/env"
